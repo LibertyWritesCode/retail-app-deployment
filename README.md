@@ -21,3 +21,4 @@ This project deploys the InnovateMart retail store application on Amazon EKS usi
 ```bash
 git clone <>
 cd innovatemart-eks
+# Testing pipeline after credential cleanup
