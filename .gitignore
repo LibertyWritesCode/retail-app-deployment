@@ -1,0 +1,25 @@
+
+# Binaries
+
+kubectl*
+
+awscli-bundle*
+
+# Terraform
+
+terraform/.terraform/
+
+.terraform/
+
+*.tfvars
+
+.terraform.lock.hcl
+
+terraform.tfstate*
+
+.tfstate
+
+# AWS
+
+.aws/
+

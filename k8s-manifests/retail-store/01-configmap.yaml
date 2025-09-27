@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: retail-store-config
+  namespace: retail-store-sample
+data:
+  CATALOG_URL: "http://catalog.retail-store-sample.svc.cluster.local"
+  CARTS_URL: "http://carts.retail-store-sample.svc.cluster.local"
+  ORDERS_URL: "http://orders.retail-store-sample.svc.cluster.local"
+  CHECKOUT_URL: "http://checkout.retail-store-sample.svc.cluster.local"
+  ASSETS_URL: "http://assets.retail-store-sample.svc.cluster.local"

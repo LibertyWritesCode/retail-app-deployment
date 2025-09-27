@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carts
+  namespace: retail-store-sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carts
+  template:
+    metadata:
+      labels:
+        app: carts
+    spec:
+      containers:
+      - name: carts
+        image: public.ecr.aws/aws-containers/retail-store-sample-cart:0.4.0
+        env:
+        - name: DYNAMODB_ENDPOINT
+          value: "http://dynamodb.retail-store-sample.svc.cluster.local:8000"
+        - name: AWS_ACCESS_KEY_ID
+          value: "key"
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "secret"
+        - name: AWS_DEFAULT_REGION
+          value: "us-west-2"
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carts
+  namespace: retail-store-sample
+spec:
+  selector:
+    app: carts
+  ports:
+  - port: 80
+    targetPort: 8080

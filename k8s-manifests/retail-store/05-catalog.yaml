@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog
+  namespace: retail-store-sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog
+  template:
+    metadata:
+      labels:
+        app: catalog
+    spec:
+      containers:
+      - name: catalog
+        image: public.ecr.aws/aws-containers/retail-store-sample-catalog:0.4.0
+        env:
+        - name: DB_USER
+          value: "catalog_user"
+        - name: DB_PASSWORD
+          value: "default_password"
+        - name: DB_NAME
+          value: "catalog"
+        - name: DB_ENDPOINT
+          value: "mysql.retail-store-sample.svc.cluster.local"
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog
+  namespace: retail-store-sample
+spec:
+  selector:
+    app: catalog
+  ports:
+  - port: 80
+    targetPort: 8080
