@@ -142,19 +142,7 @@ I containerized the retail store application using Kubernetes manifests I wrote.
 - **Orders Service**: Processes orders with PostgreSQL
 - **Checkout Service**: Manages payment flow with Redis caching
 
-I configured each service with proper resource limits and health checks. For example, in my catalog deployment:
-
-```yaml
-containers:
-- name: catalog
-  image: public.ecr.aws/aws-containers/retail-store-sample-catalog:0.4.0
-  resources:
-    requests:
-      memory: "64Mi"
-      cpu: "50m"
-    limits:
-      memory: "128Mi"
-      cpu: "100m"
+I configured each service with proper resource limits and health checks.
 ```
 
 I used Kubernetes Services to enable communication between microservices and configured a LoadBalancer service for external access to the UI.
@@ -169,7 +157,7 @@ During deployment, I hit several AWS service quotas that initially blocked my pi
 
 **Elastic IP Limit**: I needed 2 Elastic IPs for my NAT Gateways, but my account was at the limit. I released unused EIPs and optimized my design to use fewer resources.
 
-**Node Group Creation Failures**: I initially configured 10 t3.micro instances, which exceeded capacity in some Availability Zones. I reduced this to 2-4 nodes and added multiple instance types as fallbacks:
+**Node Group Creation Failures**: I initially configured 10 t3.medium instances, which exceeded capacity in some Availability Zones. I reduced this to 2-4 nodes and added multiple instance types as fallbacks:
 
 ```hcl
 instance_types = ["t3.micro", "t2.micro"]
@@ -245,9 +233,7 @@ Through this project, I gained valuable insights into production infrastructure:
 
 ## How to Use My Infrastructure
 
-If you want to deploy this infrastructure yourself:
 
-### Prerequisites
 - AWS CLI configured with appropriate permissions
 - kubectl for Kubernetes management
 - Git for repository operations
@@ -299,7 +285,6 @@ I designed this infrastructure with cost optimization in mind:
 terraform destroy -auto-approve
 ```
 
-**Monitoring**: I recommend setting up AWS billing alerts to track costs and avoid surprises.
 
 ## Future Improvements
 
